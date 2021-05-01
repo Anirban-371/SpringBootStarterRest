@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,17 +19,20 @@ import com.javasampleapproach.restdata.repository.PersonDAOImpl;
 public class CustomerController {
 	List<Customer> customerList = new ArrayList<Customer>();
 	
+	@Autowired
+	PersonDAOImpl personDAOImpl;
+	
 	@PostMapping(value = "/user")
-    public List<Customer> getPaymentCurrency(@RequestBody Customer customer) {
-		System.out.println("getting the customer");
+    public void getPaymentCurrency(@RequestBody Customer customer) {
+		System.out.println("getting the customer"+customer);
 		//PersonDAOImpl personDAOImpl = new PersonDAOImpl();
 		
 		Random randomGenerator = new Random();
 		int randomInt = randomGenerator.nextInt(8);
 		customer.setId(randomInt);
 		customerList.add(customer);
-        //return personDAOImpl.getCustomerDetails("abc@gmail.com");
-		return customerList;
+        personDAOImpl.saveCustomerDetails(customer);
+		//return customerList;
     }
 	
 	@GetMapping(value = "/customerListabc")
